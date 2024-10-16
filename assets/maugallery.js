@@ -58,7 +58,7 @@
     });
 
     $(".gallery").on("click", ".nav-link", $.fn.mauGallery.methods.filterByTag);
-    $(".gallery").on("click", ".mg-prev", () =>
+    $(".gallery").on("click", ".mg-prev", () => 
       $.fn.mauGallery.methods.prevImage(options.lightboxId)
     );
     $(".gallery").on("click", ".mg-next", () =>
@@ -147,15 +147,13 @@
       }
       let index = 0,
         next = null;
-
-      $(imagesCollection).each(function(i) {
+        $(imagesCollection).each(function(i) {
         if ($(activeImage).attr("src") === $(this).attr("src")) {
           index = i ;
-        }
+        }      
       });
-      next =
-        imagesCollection[index] ||
-        imagesCollection[imagesCollection.length - 1];
+      index = index - 1 < 0 ? imagesCollection.length - 1 : index - 1;
+      next = imagesCollection[index];
       $(".lightboxImage").attr("src", $(next).attr("src"));
     },
     nextImage() {
@@ -192,7 +190,8 @@
           index = i;
         }
       });
-      next = imagesCollection[index] || imagesCollection[0];
+      index = (index + 1) % imagesCollection.length;
+      next = imagesCollection[index];
       $(".lightboxImage").attr("src", $(next).attr("src"));
     },
     createLightBox(gallery, lightboxId, navigation) {
@@ -204,14 +203,14 @@
                         <div class="modal-body">
                             ${
                               navigation
-                                ? '<div class="mg-prev" style="cursor:pointer;position:absolute;top:50%;left:-15px;background:white;"><</div>'
-                                : '<span style="display:none;" />'
+                                ? '<div class="mg-prev" role="button" aria-label="Image précédente"><</div>'
+                                : '<span style="display:none;"/>'
                             }
                             <img class="lightboxImage img-fluid" alt="Contenu de l'image affichée dans la modale au clique"/>
                             ${
                               navigation
-                                ? '<div class="mg-next" style="cursor:pointer;position:absolute;top:50%;right:-15px;background:white;}">></div>'
-                                : '<span style="display:none;" />'
+                                ? '<div class="mg-next" role="button" aria-label="Image suivante">></div>'
+                                : '<span style="display:none;"/>'
                             }
                         </div>
                     </div>
